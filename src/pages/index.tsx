@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { GetStaticProps } from 'next';
 
 import { getPrismicClient } from '../services/prismic';
@@ -24,9 +26,10 @@ interface HomeProps {
   postsPagination: PostPagination;
 }
 
-// export default function Home() {
-//   // TODO
-// }
+export default function Home() {
+  // TODO
+  return <h1>Hellow world</h1>;
+}
 
 // export const getStaticProps = async () => {
 //   // const prismic = getPrismicClient({});
