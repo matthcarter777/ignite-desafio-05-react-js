@@ -1,14 +1,5 @@
-.container {
-  max-width: 1120px;
-  margin: 0 auto;
-  padding: 0 4rem;
-  margin-top: 3rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
 .posts {
+  margin-top: 3rem;
 
   a {
     cursor: pointer;
@@ -26,35 +17,5 @@
       margin-top: 5px;
     }
 
-    .info {
-      margin-bottom: 3rem;
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-
-      color: var(--info);
-
-      time {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-right: 20px;
-
-        span {
-          margin-left: 10px;
-        }
-      }
-
-      span {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-right: 20px;
-
-        span {
-          margin-left: 10px;
-        }
-      }
-    }
   }
 }

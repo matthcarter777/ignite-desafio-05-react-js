@@ -32,14 +32,14 @@ interface HomeProps {
 
 export default function Home({ postsPagination }: HomeProps) {
   return (
-    <main className={styles.container}>
+    <main className={commonStyles.container}>
       <div className={styles.posts}>
         {postsPagination?.results.map(post => (
           <Link key={post.uid} href={`/post/${post.uid}`}>
             <a>
               <strong>{post.data.title}</strong>
               <p>{post.data.subtitle}</p>
-              <div className={styles.info}>
+              <div className={commonStyles.info}>
                 <time>
                   <AiOutlineCalendar />
                   <span>{post.first_publication_date}</span>
