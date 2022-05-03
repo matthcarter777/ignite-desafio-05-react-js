@@ -18,3 +18,17 @@
     margin-bottom: 20px
   }
 }
+
+.postContent {
+  h2 {
+    margin-bottom: 20px;
+    color: var(--heading);
+    font-weight: regular;
+  }
+}
+
+.postBody {
+  margin-bottom: 20px;
+  color: var(--body);
+  line-height: 1.5rem;
+}
