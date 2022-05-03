@@ -56,11 +56,15 @@ export default function Post({ post }: PostProps) {
             <span>{post.data.author}</span>
           </span>
         </div>
-
-        {/*         <div
-          className={styles.postContent}
-          dangerouslySetInnerHTML={{ __html: post.data.content }}
-        /> */}
+        {post.data.content.map(({ heading, body }) => (
+          <div key={heading} className={styles.postContent}>
+            {heading && <h2>{heading}</h2>}
+            <div
+              className={styles.postBody}
+              dangerouslySetInnerHTML={{ __html: RichText.asHtml(body) }}
+            />
+          </div>
+        ))}
       </article>
     </main>
   );
@@ -93,14 +97,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         url: response.data.banner.url,
       },
       author: response.data.author,
-      content: {
-        heading: response.data.content[0].heading,
-        body: response.data.content[0].body,
-      },
+      content: response.data.content,
     },
   };
-
-  console.log(post.data.content);
 
   return {
     props: {

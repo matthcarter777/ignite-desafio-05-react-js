@@ -4,7 +4,7 @@
   a {
     cursor: pointer;
 
-    strong {
+    h1 {
       font-size: 1.8rem;
       color: var(--heading);
       line-height: 1.5em;
@@ -17,5 +17,15 @@
       margin-top: 5px;
     }
 
+  }
+}
+
+.button {
+  background: inherit;
+  border: none;
+  color: var(--highlight);
+
+  &:hover {
+    text-decoration: underline;
   }
 }

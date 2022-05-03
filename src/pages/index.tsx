@@ -1,11 +1,13 @@
+/* eslint-disable no-shadow */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 
 import { AiOutlineCalendar, AiOutlineUser } from 'react-icons/ai';
+import { useState } from 'react';
 import { getPrismicClient } from '../services/prismic';
 
 import commonStyles from '../styles/common.module.scss';
@@ -31,18 +33,50 @@ interface HomeProps {
 }
 
 export default function Home({ postsPagination }: HomeProps) {
+  const [posts, setPosts] = useState<Post[]>(postsPagination.results);
+  const [next_page, setNextPage] = useState(postsPagination.next_page);
+
+  function hanleNextPagePost() {
+    fetch(next_page)
+      .then(res => res.json())
+      .then(data => {
+        const newPost = data.results.map(post => {
+          return {
+            uid: post.uid,
+            data: {
+              title: post.data.title,
+              subtitle: post.data.subtitle,
+              author: post.data.author,
+            },
+            first_publication_date: post.first_publication_date,
+          };
+        });
+
+        setPosts([...posts, ...newPost]);
+        setNextPage(data.next_page);
+      });
+  }
+
   return (
     <main className={commonStyles.container}>
       <div className={styles.posts}>
-        {postsPagination?.results.map(post => (
+        {posts?.map(post => (
           <Link key={post.uid} href={`/post/${post.uid}`}>
             <a>
-              <strong>{post.data.title}</strong>
+              <h1>{post.data.title}</h1>
               <p>{post.data.subtitle}</p>
               <div className={commonStyles.info}>
                 <time>
                   <AiOutlineCalendar />
-                  <span>{post.first_publication_date}</span>
+                  <span>
+                    {format(
+                      parseISO(post.first_publication_date),
+                      'dd MMM yyyy',
+                      {
+                        locale: ptBR,
+                      }
+                    )}
+                  </span>
                 </time>
                 <span>
                   <AiOutlineUser />
@@ -52,6 +86,15 @@ export default function Home({ postsPagination }: HomeProps) {
             </a>
           </Link>
         ))}
+        {next_page && (
+          <button
+            className={styles.button}
+            type="button"
+            onClick={() => hanleNextPagePost()}
+          >
+            Carregar mais posts
+          </button>
+        )}
       </div>
     </main>
   );
@@ -60,19 +103,13 @@ export default function Home({ postsPagination }: HomeProps) {
 export const getStaticProps: GetStaticProps = async () => {
   const prismic = getPrismicClient({});
   const postsResponse = await prismic.getByType('posts', {
-    pageSize: 2,
+    pageSize: 1,
   });
 
   const posts = postsResponse.results.map(post => {
     return {
       uid: post.uid,
-      first_publication_date: format(
-        new Date(post.first_publication_date),
-        'ee MMM yyyy',
-        {
-          locale: ptBR,
-        }
-      ),
+      first_publication_date: post.first_publication_date,
       data: {
         title: post.data.title,
         subtitle: post.data.subtitle,
